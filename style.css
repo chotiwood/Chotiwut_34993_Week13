@@ -1,0 +1,104 @@
+body{
+    background-color: aqua;
+}
+
+.wrapper {
+    padding-top: 250px;
+    margin: auto;
+    text-align: center;
+}
+
+#title{
+    font-size: 30px;
+    font-weight: bold;
+    font-family:Verdana,sans-serif;
+    padding-bottom: 30px;
+}
+
+#remaining{
+  font-size: 30px;
+  padding-bottom: 30px;
+  display: none;
+  font-family:Verdana,sans-serif;
+}
+
+#timeUp{
+  font-size: 30px;
+  padding-bottom: 30px;
+  display: none;
+  font-family:Verdana,sans-serif;
+}
+
+.time{
+    font-size: 30px;
+    font-family:Verdana,sans-serif;
+}
+
+
+/*Up and Down Buttons*/
+.up{
+    padding-top: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.down{
+    display: flex;
+    justify-content: center;
+}
+
+.increase {
+	width: 0;
+	height: 0;
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+    border-bottom: 20px solid black;
+    margin: 0 15px;
+}
+
+.decrease {
+	width: 0;
+	height: 0;
+	border-left: 15px solid transparent;
+	border-right: 15px solid transparent;
+    border-top: 20px solid black;
+    margin: 0 15px;
+}
+
+/*Functional Buttons*/
+.buttons{
+    margin: 30px 0 0;
+}
+
+.button{
+    width: 150px;
+    padding: 5px;
+    font-size: 30px;
+    margin: 10px;
+    background-color: darkgray;
+    font-family:Verdana,sans-serif;
+}
+
+#start{
+  margin: auto;
+}
+
+#pause{
+  display: none;
+  margin: auto;
+  margin-top: 50px;
+}
+
+#reset{
+  background-color: rgb(255, 99, 102);
+}
+
+#resume, #reset{
+  display: none;
+  margin-top: 20px;
+}
+
+#paused{
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html ng-app="countdown" ng-controller="myCtrl">
+    <head>
+        <script src="angular.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Quiz PTI-LAB</title>
+    </head>
+   	<body>
+        <div class="wrapper">
+            <div id="title">SIMPLE COUNTDOWN</div>
+            <div id="remaining">Time Remaining</div>
+            <div id="timeUp">BOOOM!!!!!</div>
+            <div class="up">
+                <div class="increase" ng-click="increaseHour()"></div>
+                <div class="increase" ng-click="increaseMinute()"></div>
+                <div class="increase" ng-click="increaseSecond()"></div>
+            </div>
+            <div>
+                <span class="time" ng-init="hour = '00'">{{hour}}</span>
+                <span class="time" >:</span>
+                <span class="time" ng-init="minute = '00'">{{minute}}</span>
+                <span class="time" >:</span>
+                <span class="time" ng-init="second = '00'">{{second}}</span>
+            </div>
+            <div class="down">
+                <div class="decrease" ng-click="decreaseHour()"></div>
+                <div class="decrease" ng-click="decreaseMinute()"></div>
+                <div class="decrease" ng-click="decreaseSecond()"></div>
+            </div>
+            <div class="buttons">
+                <div class="button" id="start" ng-click="startTimer()">START</div>
+            </div>
+            <div class="buttons">
+                <div class="button" id="pause" ng-click="pauseTimer()">PAUSE</div>
+            </div>
+            <div class="buttons" id="paused">
+                <div class="button" id="resume" ng-click="resumeTimer()">Resume</div>
+                <div class="button" id="reset" ng-click="resetTimer()">Reset</div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+          var app = angular.module("countdown", []);
+          app.controller("myCtrl", function($scope, $interval) {
+            var hours = 0;
+            var minutes = 0;
+            var seconds = 0;
+
+            var timer;
+
+            /*Increase Function*/
+            $scope.increaseHour = function(){
+              hours += 1;
+
+              if (hours < 24){
+                hours < 10 ? $scope.hour = "0" + hours : $scope.hour = hours;
+              }
+              else {
+                $scope.hour = "00";
+                hours = 0;
+              }
+            }
+
+            $scope.increaseMinute = function(){
+              minutes += 1;
+
+              if (minutes < 60){
+                minutes < 10 ? $scope.minute = "0" + minutes : $scope.minute = minutes;
+              }
+              else {
+                $scope.minute = "00";
+                minutes = 0;
+              }
+            }
+
+            $scope.increaseSecond = function(){
+              seconds += 1;
+
+              if (seconds < 60){
+                seconds < 10 ? $scope.second = "0" + seconds : $scope.second = seconds;
+              }
+              else {
+                $scope.second = "00";
+                seconds = 0;
+              }
+            }
+
+            /*Decrease Function*/
+            $scope.decreaseHour = function(){
+              hours -= 1;
+
+              if (hours >= 0){
+                hours < 10 ? $scope.hour = "0" + hours : $scope.hour = hours;
+              }
+              else {
+                hours = 23;
+                $scope.hour = hours;
+              }
+            }
+
+            $scope.decreaseMinute = function(){
+              minutes -= 1;
+
+              if (minutes >= 0){
+                minutes < 10 ? $scope.minute = "0" + minutes : $scope.minute = minutes;
+              }
+              else {
+                minutes = 59;
+                $scope.minute = minutes;
+              }
+            }
+
+            $scope.decreaseSecond = function(){
+              seconds -= 1;
+
+              if (seconds >= 0){
+                seconds < 10 ? $scope.second = "0" + seconds : $scope.second = seconds;
+              }
+              else {
+                seconds = 59;
+                $scope.second = seconds;
+              }
+            }
+
+            /* Scope Timer Function*/
+            $scope.stopTimer = function(){
+              if (angular.isDefined(timer)) {
+                $interval.cancel(timer);
+                timer = undefined;
+
+                document.getElementById("resume").style.display="none";
+                document.getElementById("pause").style.display="none";
+                document.getElementById("reset").style.display="block";
+              }
+            }
+
+            $scope.startTimer = function(){
+              if (angular.isDefined(timer)) return;
+
+              document.getElementById("start").style.display="none";
+              document.getElementById("remaining").style.display="block";
+              document.querySelector(".up").style.display="none";
+              document.querySelector(".down").style.display="none";
+              document.getElementById("pause").style.display="block";
+
+              timer = $interval(function(){
+                let totalTime = (hours*3600) + (minutes*60) + (seconds);
+                totalTime-=1;
+
+                if (totalTime >= 0){
+                  hours = Math.floor(totalTime / 3600);
+                  minutes = Math.floor((totalTime % 3600) / 60);
+                  seconds = Math.floor(((totalTime % 3600) % 60));
+
+                  hours < 10 ? $scope.hour = "0" + hours : $scope.hour = hours;
+                  minutes < 10 ? $scope.minute = "0" + minutes : $scope.minute = minutes;
+                  seconds < 10 ? $scope.second = "0" + seconds : $scope.second = seconds;
+                }
+                else{
+                  $scope.stopTimer();
+                  document.getElementById("remaining").style.display="none";
+                  document.querySelector("body").style.background="lightgreen";
+                  document.getElementById("timeUp").style.display="block";
+                }
+              }, 1000);
+            }
+
+            $scope.pauseTimer = function(){
+              $scope.stopTimer();
+              document.getElementById("pause").style.display="none";
+              document.getElementById("resume").style.display="block";
+              document.getElementById("reset").style.display="block";
+            }
+
+            $scope.resumeTimer = function(){
+              $scope.startTimer();
+              document.getElementById("resume").style.display="none";
+              document.getElementById("reset").style.display="none";
+            }
+
+            $scope.resetTimer = function(){
+              document.querySelector(".up").style.display="flex";
+              document.querySelector(".down").style.display="flex";
+              document.getElementById("remaining").style.display="none";
+              document.getElementById("resume").style.display="none";
+              document.getElementById("reset").style.display="none";
+              document.getElementById("start").style.display="block";
+              document.querySelector("body").style.background="aqua";
+              document.getElementById("timeUp").style.display="none";
+
+              hours = 0;
+              minutes = 0;
+              seconds = 0;
+
+              $scope.hour = "00";
+              $scope.minute = "00";
+              $scope.second = "00";
+            }
+
+          });
+        </script>
